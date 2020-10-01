@@ -18,19 +18,40 @@ var myMap = L.map("map", {
 
   var geojson
 
-d3.json(queryUrl, data => {
-    // data.features.forEach(obj => {
-    //     var mag = +obj.properties.mag;
-    //     var lat = +obj.geometry.coordinates[1];
-    //     var lng = +obj.geometry.coordinates[0];
+  function getColor(d) {
+    return d > 5 ? '#8c2d04' :
+     d > 4  ? '#cc4c02' :
+     d > 3  ? '#ec7014' :
+     d > 2  ? '#fe9929' :
+     d > 1   ? '#fec44f' :
+     d > 0   ? '#fee391' :
+            '#ffffd4';
+    }
 
-    //     L.circle([lat, lng], {
-    //         color: "green",
-    //         fillColor: "lightgreen",
-    //         fillOpacity: 0.75,
-    //         radius: mag * 39000
-    //       }).addTo(myMap);
-    //     })
+  function style(feature) {
+    return {
+        fillColor: getColor(features.properties.mag),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+
+d3.json(queryUrl, data => {
+    data.features.forEach(obj => {
+        var mag = +obj.properties.mag;
+        var lat = +obj.geometry.coordinates[1];
+        var lng = +obj.geometry.coordinates[0];
+
+        L.circle([lat, lng], {
+            color: "green",
+            fillColor: "lightgreen",
+            fillOpacity: 0.75,
+            radius: mag * 39000
+          }).addTo(myMap);
+        })
      
     geojson = L.choropleth(data, {
     

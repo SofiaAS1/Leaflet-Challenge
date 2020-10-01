@@ -6,10 +6,23 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 d3.json(queryUrl, function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.features);
-});
+
+//   var geojsonMarkerOptions = {
+//     radius: data.properties.mag * 40000,
+//     fillColor: "lightgreen",
+//     color: "green",
+//     weight: 1,
+//     opacity: 1,
+//     fillOpacity: 0.81
+// };
+
+// L.geoJSON(someGeojsonFeature, {
+//     pointToLayer: function (feature, latlng) {
+//         return L.circleMarker(latlng, geojsonMarkerOptions);
+//     }
+// }).addTo(map);
 
 function createFeatures(earthquakeData) {
-
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
   function onEachFeature(feature, layer) {
@@ -20,7 +33,7 @@ function createFeatures(earthquakeData) {
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
-    onEachFeature: onEachFeature
+    onEachFeature: onEachFeature, 
   });
 
   // Sending our earthquakes layer to the createMap function
@@ -76,7 +89,7 @@ function createMap(earthquakes) {
             color: "green",
             fillColor: "lightgreen",
             fillOpacity: 0.75,
-            radius: mag * 10000
+            radius: mag * 40000
           }).addTo(myMap);
     });
 })
@@ -88,4 +101,4 @@ function createMap(earthquakes) {
     collapsed: false
   }).addTo(myMap);
 }
-
+});
