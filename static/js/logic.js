@@ -7,14 +7,14 @@ d3.json(queryUrl, function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.features);
 
-//   var geojsonMarkerOptions = {
-//     radius: data.properties.mag * 40000,
-//     fillColor: "lightgreen",
-//     color: "green",
-//     weight: 1,
-//     opacity: 1,
-//     fillOpacity: 0.81
-// };
+  var geojsonMarkerOptions = {
+    radius: data.properties.mag * 40000,
+    fillColor: "lightgreen",
+    color: "green",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.81
+};
 
 // L.geoJSON(someGeojsonFeature, {
 //     pointToLayer: function (feature, latlng) {
@@ -25,7 +25,8 @@ d3.json(queryUrl, function(data) {
 function createFeatures(earthquakeData) {
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
-  function onEachFeature(feature, layer) {
+
+  function onEachFeature(feature, layer,latlng) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p>");
   }
