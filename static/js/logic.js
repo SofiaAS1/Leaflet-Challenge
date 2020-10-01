@@ -1,5 +1,6 @@
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+//   "2014-01-02&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
@@ -20,7 +21,6 @@ function createFeatures(earthquakeData) {
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature
-
   });
 
   // Sending our earthquakes layer to the createMap function
@@ -60,11 +60,26 @@ function createMap(earthquakes) {
   // Create our map, giving it the streetmap and earthquakes layers to display on load
   var myMap = L.map("map", {
     center: [
-      37.09, -95.71
+        20.52, -20
     ],
-    zoom: 5,
+    zoom: 2,
     layers: [streetmap, earthquakes]
   });
+
+  d3.json(queryUrl, data => {
+    data.features.forEach(obj => {
+        var mag = +obj.properties.mag;
+        var lat = obj.geometry.coordinates[1];
+        var lng = obj.geometry.coordinates[0];
+
+        L.circle([lat, lng], {
+            color: "green",
+            fillColor: "lightgreen",
+            fillOpacity: 0.75,
+            radius: mag * 10000
+          }).addTo(myMap);
+    });
+})
 
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
@@ -73,3 +88,4 @@ function createMap(earthquakes) {
     collapsed: false
   }).addTo(myMap);
 }
+
