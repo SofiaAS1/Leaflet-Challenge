@@ -1,11 +1,21 @@
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
-//   "2014-01-02&maxlongitude=-69.52148437&minlongitude=-123.83789062&maxlatitude=48.74894534&minlatitude=25.16517337";
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
+
+    createFeatures(data.features);
   // Once we get a response, send the data.features object to the createFeatures function
-  createFeatures(data.features);
+    // var circleMarkers = {
+    //   opacity: 1,
+    //   fillOpacity: 1,
+    //   fillColor: color,
+    //   color: "#000000",
+    //   radius: +data.properties.mag,
+    //   stroke: true,
+    //   weight: 0.5
+    // };
+  
 //   data.features.forEach(obj => {
 //     var mag = +obj.properties.mag;
     
@@ -19,10 +29,33 @@ d3.json(queryUrl, function(data) {
 //   }
 });
 
+function color(mag) {
+            var color = ""
+        // Conditionals for color
+        if (mag > 5) {
+          color = "#d73027";
+        }
+        else if (mag > 4) {
+          color = "#fc8d59";
+        }
+        else if (mag > 3) {
+          color = "#fee08b";
+        }
+        else if (mag > 2) {
+            color = "#d9ef8b";
+          }
+        else if (mag > 1) {
+            color = "#91cf60";
+          }
+        else {
+          color = "#1a9850";
+        }
+}
+
 function createFeatures(earthquakeData) {
+
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
-
 function onEachFeature(feature, layer,) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p><p>" + "Magnitude: " + feature.properties.mag + "</p>");
@@ -33,11 +66,10 @@ function onEachFeature(feature, layer,) {
   var earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature, 
     pointToLayer: function (feature, latlng) {
-        console.log(feature)
         return L.circleMarker(latlng, {
             radius: +feature.properties.mag * 40000,
-            fillColor: "lightgreen",
-            color: "green",
+            fillColor: color,
+            color: "#000000",
             weight: 1,
             opacity: 1,
             fillOpacity: 0.8,   
