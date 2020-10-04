@@ -6,15 +6,18 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 d3.json(queryUrl, function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
   createFeatures(data.features);
-
-  var circleMarkers = {
-    radius: data.features.properties.mag * 40000,
-    fillColor: "lightgreen",
-    color: "green",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-};
+//   data.features.forEach(obj => {
+//     var mag = +obj.properties.mag;
+    
+//   var circleMarkers = {
+//     radius: mag * 40000,
+//     fillColor: "lightgreen",
+//     color: "green",
+//     weight: 1,
+//     opacity: 1,
+//     fillOpacity: 0.8
+//   }
+});
 
 function createFeatures(earthquakeData) {
   // Define a function we want to run once for each feature in the features array
@@ -30,7 +33,15 @@ function onEachFeature(feature, layer,) {
   var earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature, 
     pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, circleMarkers);
+        console.log(feature)
+        return L.circleMarker(latlng, {
+            radius: +feature.properties.mag * 40000,
+            fillColor: "lightgreen",
+            color: "green",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8,   
+          });
     }
   });
 
@@ -119,5 +130,5 @@ function createMap(earthquakes) {
 //  // Adding legend to the map
 //  legend.addTo(myMap);
 
-}
-});
+};
+
