@@ -19,22 +19,22 @@ d3.json(queryUrl, function(data) {
 function color(mag) {
         var color = ""
         // Conditionals for color
-        if (mag > 6) {
+        if (mag > 5.99) {
           color = "#d73027";
         }
-        else if (mag > 5) {
+        else if (mag > 4.99) {
           color = "#fc8d59";
         }
-        else if (mag > 4) {
+        else if (mag > 3.99) {
           color = "#fee08b";
         }
-        else if (mag > 3) {
+        else if (mag > 2.99) {
             color = "#ffffbf";
           }
-        else if (mag > 2) {
+        else if (mag > 1.99) {
             color = "#d9ef8b";
           }
-        else if (mag > 1) {
+        else if (mag > .99) {
             color = "#91cf60";
           }
         else {
