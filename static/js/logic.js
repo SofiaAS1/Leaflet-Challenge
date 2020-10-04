@@ -3,34 +3,21 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
-
-    createFeatures(data.features);
-  // Once we get a response, send the data.features object to the createFeatures function
-    // var circleMarkers = {
-    //   opacity: 1,
-    //   fillOpacity: 1,
-    //   fillColor: color,
-    //   color: "#000000",
-    //   radius: +data.properties.mag,
-    //   stroke: true,
-    //   weight: 0.5
-    // };
-  
-//   data.features.forEach(obj => {
-//     var mag = +obj.properties.mag;
-    
-//   var circleMarkers = {
-//     radius: mag * 40000,
-//     fillColor: "lightgreen",
-//     color: "green",
-//     weight: 1,
-//     opacity: 1,
-//     fillOpacity: 0.8
-//   }
+ // Once we get a response, send the data.features object to the createFeatures function
+    createFeatures(data.features); 
 });
 
+// var circleMarkers = {
+//     radius: 25,
+//     fillColor: "#000000",
+//     color: "#000000",
+//     weight: 1,
+//     opacity: 1,
+//     fillOpacity: 0.8,  
+//   }
+    
 function color(mag) {
-            var color = ""
+        var color = ""
         // Conditionals for color
         if (mag > 5) {
           color = "#d73027";
@@ -50,29 +37,29 @@ function color(mag) {
         else {
           color = "#1a9850";
         }
+        return color
 }
-
-function createFeatures(earthquakeData) {
 
   // Define a function we want to run once for each feature in the features array
   // Give each feature a popup describing the place and time of the earthquake
-function onEachFeature(feature, layer,) {
+function onEachFeature(feature, layer) {
     layer.bindPopup("<h3>" + feature.properties.place +
       "</h3><hr><p>" + new Date(feature.properties.time) + "</p><p>" + "Magnitude: " + feature.properties.mag + "</p>");
   }
 
+function createFeatures(earthquakeData) {
   // Create a GeoJSON layer containing the features array on the earthquakeData object
   // Run the onEachFeature function once for each piece of data in the array
   var earthquakes = L.geoJSON(earthquakeData, {
     onEachFeature: onEachFeature, 
-    pointToLayer: function (feature, latlng) {
+    pointToLayer: function (data, latlng) {
         return L.circleMarker(latlng, {
-            radius: +feature.properties.mag * 40000,
-            fillColor: color,
+            radius: data.properties.mag * 4,
+            fillColor: color(data.properties.mag),
             color: "#000000",
             weight: 1,
             opacity: 1,
-            fillOpacity: 0.8,   
+            fillOpacity: 0.8,  
           });
     }
   });
@@ -102,10 +89,10 @@ function createMap(earthquakes) {
 
   // Define a baseMaps object to hold our base layers
   var baseMaps = {
-    "Street Map": streetmap,
+    "World Map": streetmap,
     "Dark Map": darkmap
   };
-
+ 
   // Create overlay object to hold our overlay layer
   var overlayMaps = {
     Earthquakes: earthquakes
@@ -142,25 +129,34 @@ function createMap(earthquakes) {
     collapsed: false
   }).addTo(myMap);
 
-//  // Set up the legend
-//  var legend = L.control({ position: "bottomright" });
-//  legend.onAdd = function() {
-//    var div = L.DomUtil.create("div", "info legend");
-//    var limits = [0,1,2,3,4,5];
-//    var colors = ['#ffffd4','#fee391','#fec44f','#fe9929','#d95f0e','#993404'];
-//    var labels = [];
+ // Set up the legend
+ var legend = L.control({ position: "bottomright" });
+ legend.onAdd = function() {
+   var div = L.DomUtil.create("div", "info legend");
+   var limits = [0,1,2,3,4,5];
+   var colors = ['#1a9850','#91cf60','#d9ef8b', '#fee08b', '#fc8d59', '#d73027'];
+   var labels = [];
+
+   var legendInfo = "<h1>Earthquake</h1>" + "<h1>Magnitude</h1>"; 
+    //    +
+    //   "<div class=\"labels\">" +
+    //     "<div class=\"min\">" + limits[0] + "</div>" +
+    //     "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+    //   "</div>";
+
+    div.innerHTML = legendInfo;
 
 
-//    limits.forEach(function(colors, index) {
-//      labels.push("<ol><div style=\"background-color: " + colors + "\"></div><div>" + limit[index] + "</div></ol>");
-//    });
+   colors.forEach(function(color, index) {
+     labels.push("<ol><div style=\"background-color: " + color + "\"</div><div>" + limits[index] + "</div></ol>");
+   });
 
-//    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
-//    return div;
-//  };
+   div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+   return div;
+ };
 
-//  // Adding legend to the map
-//  legend.addTo(myMap);
+ // Adding legend to the map
+ legend.addTo(myMap);
 
 };
 

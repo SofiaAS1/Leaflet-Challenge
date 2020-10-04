@@ -30,8 +30,9 @@ background-color: rgb(255, 254, 254);
   list-style-type: none;
 }
 
-.legend li {
+.legend ol {
   display: block;
+  text-align: center;
   width: 30px;
   height: 22px;
 }
