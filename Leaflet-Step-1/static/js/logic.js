@@ -19,15 +19,18 @@ d3.json(queryUrl, function(data) {
 function color(mag) {
         var color = ""
         // Conditionals for color
-        if (mag > 5) {
+        if (mag > 6) {
           color = "#d73027";
         }
-        else if (mag > 4) {
+        else if (mag > 5) {
           color = "#fc8d59";
         }
-        else if (mag > 3) {
+        else if (mag > 4) {
           color = "#fee08b";
         }
+        else if (mag > 3) {
+            color = "#ffffbf";
+          }
         else if (mag > 2) {
             color = "#d9ef8b";
           }
@@ -133,16 +136,16 @@ function createMap(earthquakes) {
  var legend = L.control({ position: "bottomright" });
  legend.onAdd = function() {
    var div = L.DomUtil.create("div", "info legend");
-   var limits = [0,1,2,3,4,5];
-   var colors = ['#1a9850','#91cf60','#d9ef8b', '#fee08b', '#fc8d59', '#d73027'];
+   var limits = ["0-1","1-2","2-3","3-4","4-5","5-6","6+"];
+   var colors = ['#1a9850','#91cf60','#d9ef8b','#ffffbf','#fee08b', '#fc8d59', '#d73027'];
    var labels = [];
 
    var legendInfo = "<h1>Earthquake</h1>" + "<h1>Magnitude</h1>"; 
-    //    +
-    //   "<div class=\"labels\">" +
-    //     "<div class=\"min\">" + limits[0] + "</div>" +
-    //     "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
-    //   "</div>";
+      //  +
+      // "<div class=\"labels\">" +
+      //   "<div class=\"min\">" + limits[0] + "</div>" +
+      //   "<div class=\"max\">" + limits[limits.length - 1] + "</div>" +
+      // "</div>";
 
     div.innerHTML = legendInfo;
 
