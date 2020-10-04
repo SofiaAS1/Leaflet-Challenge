@@ -151,7 +151,7 @@ function createMap(earthquakes) {
 
 
    colors.forEach(function(color, index) {
-     labels.push("<ol><div style=\"background-color: " + color + "\"</div><div>" + limits[index] + "</div></ol>");
+     labels.push("<ol><div style=\"background-color: " + color + "\"</div><div><h2>" + limits[index] + "</h2></div></ol>");
    });
 
    div.innerHTML += "<ul>" + labels.join("") + "</ul>";
